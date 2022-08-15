@@ -1,13 +1,11 @@
-import warnings
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
-from urllib.parse import urlparse
 import mlflow
 import mlflow.sklearn
-import uuid
+from mlflow.models.signature import infer_signature
 
 from dagster import op, job, Out
 import mlflow
@@ -30,7 +28,7 @@ mlflow.set_tracking_uri("http://localhost:5000")
 
 
 @op()
-def load_data():
+def load_data() -> pd.DataFrame:
     csv_url = "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
     try:
         data = pd.read_csv(csv_url, sep=";")
@@ -42,8 +40,15 @@ def load_data():
     return data
 
 
-@op(out={"train_x": Out(), "test_x": Out(), "train_y": Out(), "test_y": Out()})
-def train_test_split_data(data):
+@op(
+    out={
+        "train_x": Out(pd.DataFrame),
+        "test_x": Out(pd.DataFrame),
+        "train_y": Out(pd.DataFrame),
+        "test_y": Out(pd.DataFrame),
+    }
+)
+def train_test_split_data(data: pd.DataFrame):
     # Split the data into training and test sets. (0.75, 0.25) split.
     train, test = train_test_split(data)
 
@@ -56,7 +61,13 @@ def train_test_split_data(data):
 
 
 @op(required_resource_keys={"mlflow"})
-def train_model(context, train_x, test_x, train_y, test_y):
+def train_model(
+    context,
+    train_x: pd.DataFrame,
+    test_x: pd.DataFrame,
+    train_y: pd.DataFrame,
+    test_y: pd.DataFrame,
+):
     alpha = 0.5
     l1_ratio = 0.5
     lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
@@ -77,7 +88,13 @@ def train_model(context, train_x, test_x, train_y, test_y):
     mlflow.log_metric("r2", r2)
     mlflow.log_metric("mae", mae)
 
-    mlflow.tracking.MlflowClient().create_registered_model("ElasticWineModel")
+    signature = infer_signature(test_x, lr.predict(test_x))
+    mlflow.sklearn.log_model(
+        sk_model=lr,
+        artifact_path="sklearn-model",
+        registered_model_name="ElasticNet-wine",
+        signature=signature,
+    )
 
 
 @end_mlflow_on_run_finished
