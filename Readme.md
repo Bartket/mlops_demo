@@ -31,11 +31,27 @@ Output variable (based on sensory data):
 12 - quality (score between 0 and 10)
 
 
-## Configure environment (pyenv based on Python 3.8.10)
+## Configure environment (This project ran on Ubuntu 22.04 WSL2 with pyenv based on Python 3.8.10)
+### https://github.com/pyenv/pyenv
+### https://github.com/pyenv/pyenv-installer
+## pyenv setup
 ```console
+# pyenv requirements
+sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+# pyenv setup
+curl https://pyenv.run | bash
+# follow the commands displayed in shell after the installation
+```
+## project setup
+```console
+pyenv install 3.8.10
 pyenv virtualenv 3.8.10 mlops_demo
 pyenv local mlops_demo
+# ensure you are running virtalenv
 pyenv shell mlops_demo
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
@@ -48,5 +64,30 @@ mlflow ui \
     --default-artifact-root ./mlruns \
     --host 0.0.0.0
 
-dagit -f src/main.py
+dagit -f src/flow.py
 ```
+
+## To run an experiment in Dagster
+open mlflow http://localhost:5000
+
+open dagster http://localhost:3000
+
+In dagster go to launchpad tab and set configuration:
+```console
+ops:
+  train_model:
+    config:
+      alpha: 0.75
+      l1_ratio: 0.75
+resources:
+  mlflow:
+    config:
+      experiment_name: "wine experiment"
+```
+<img src="img/dagster_demo.png" width="800">
+
+Click [Launch Run] in bottom right
+
+You should now see your experiment in MLflow
+
+<img src="img/mlflow_demo.png" width="800">

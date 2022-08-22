@@ -1,5 +1,7 @@
 pandas
 sklearn
 dagster
+dagit
 mlflow
+dagster_mlflow
 data-science-types
