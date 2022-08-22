@@ -16,19 +16,21 @@ These datasets can be viewed as classification or regression tasks. The classes 
 
 For more information, read [Cortez et al., 2009].
 Input variables (based on physicochemical tests):
-1 - fixed acidity
-2 - volatile acidity
-3 - citric acid
-4 - residual sugar
-5 - chlorides
-6 - free sulfur dioxide
-7 - total sulfur dioxide
-8 - density
-9 - pH
-10 - sulphates
-11 - alcohol
+1. fixed acidity
+2. volatile acidity
+3. citric acid
+4. residual sugar
+5. chlorides
+6. free sulfur dioxide
+7. total sulfur dioxide
+8. density
+9. pH
+10. sulphates
+11. alcohol
+
 Output variable (based on sensory data):
-12 - quality (score between 0 and 10)
+
+12. quality (score between 0 and 10)
 
 
 ## Configure environment (This project ran on Ubuntu 22.04 WSL2 with pyenv based on Python 3.8.10)
