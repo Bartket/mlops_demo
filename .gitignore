@@ -1,7 +1,9 @@
-*.sqlite
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+# pyenv
 .python-version
-__pycache__
+# mlflow
 tmp*
 mlruns
-demo
 *.db
