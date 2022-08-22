@@ -26,11 +26,22 @@ The attributes are (dontated by Riccardo Leardi, riclea '@' anchem.unige.it )
 11. Hue
 12. OD280/OD315 of diluted wines
 13. Proline
+## Configure environment (pyenv based on Python 3.8.10)
+```console
+pyenv virtualenv 3.8.10 mlops_demo
+pyenv local mlops_demo
+pyenv shell mlops_demo
+pip install -r requirements.txt
+```
 
 ## To start run
 
 ```console
-mlflow ui --backend-store-uri sqlite:///mydb.sqlite
+export MLFLOW_TRACKING_URI=http://localhost:5000
+mlflow ui \
+    --backend-store-uri sqlite:///mlflow.db \
+    --default-artifact-root ./mlruns \
+    --host 0.0.0.0
 
 dagit -f src/main.py
 ```

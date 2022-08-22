@@ -60,7 +60,9 @@ def train_test_split_data(data: pd.DataFrame):
     return train_x, test_x, train_y, test_y
 
 
-@op(required_resource_keys={"mlflow"})
+@op(
+    required_resource_keys={"mlflow"}, config_schema={"alpha": float, "l1_ratio": float}
+)
 def train_model(
     context,
     train_x: pd.DataFrame,
@@ -68,8 +70,8 @@ def train_model(
     train_y: pd.DataFrame,
     test_y: pd.DataFrame,
 ):
-    alpha = 0.5
-    l1_ratio = 0.5
+    alpha = context.op_config["alpha"]
+    l1_ratio = context.op_config["l1_ratio"]
     lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
     lr.fit(train_x, train_y)
 
