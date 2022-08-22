@@ -3,29 +3,34 @@
 ## Description
 Wine Quality prediction model based on Wine dataset
 
-https://archive.ics.uci.edu/ml/datasets/wine
+https://archive.ics.uci.edu/ml/datasets/wine+quality
 
-Data Set Information:
+### Data Set Information:
 
-These data are the results of a chemical analysis of wines grown in the same region in Italy but derived from three different cultivars. The analysis determined the quantities of 13 constituents found in each of the three types of wines.
+The two datasets are related to red and white variants of the Portuguese "Vinho Verde" wine. For more details, consult: [Web Link] or the reference [Cortez et al., 2009]. Due to privacy and logistic issues, only physicochemical (inputs) and sensory (the output) variables are available (e.g. there is no data about grape types, wine brand, wine selling price, etc.).
 
-I think that the initial data set had around 30 variables, but for some reason I only have the 13 dimensional version. I had a list of what the 30 or so variables were, but a.) I lost it, and b.), I would not know which 13 variables are included in the set.
+These datasets can be viewed as classification or regression tasks. The classes are ordered and not balanced (e.g. there are many more normal wines than excellent or poor ones). Outlier detection algorithms could be used to detect the few excellent or poor wines. Also, we are not sure if all input variables are relevant. So it could be interesting to test feature selection methods.
 
-The attributes are (dontated by Riccardo Leardi, riclea '@' anchem.unige.it )
 
-1. Alcohol
-2. Malic acid
-3. Ash
-4. Alcalinity of ash
-5. Magnesium
-6. Total phenols
-7. Flavanoids
-8. Nonflavanoid phenols
-9. Proanthocyanins
-10. Color intensity
-11. Hue
-12. OD280/OD315 of diluted wines
-13. Proline
+### Attribute Information:
+
+For more information, read [Cortez et al., 2009].
+Input variables (based on physicochemical tests):
+1 - fixed acidity
+2 - volatile acidity
+3 - citric acid
+4 - residual sugar
+5 - chlorides
+6 - free sulfur dioxide
+7 - total sulfur dioxide
+8 - density
+9 - pH
+10 - sulphates
+11 - alcohol
+Output variable (based on sensory data):
+12 - quality (score between 0 and 10)
+
+
 ## Configure environment (pyenv based on Python 3.8.10)
 ```console
 pyenv virtualenv 3.8.10 mlops_demo
