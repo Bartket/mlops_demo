@@ -90,6 +90,6 @@ resources:
 
 Click [Launch Run] in bottom right
 
-You should now see your experiment in MLflow
+After a succesfull run, you should see your experiment in MLflow
 
 <img src="img/mlflow_demo.png" width="800">
